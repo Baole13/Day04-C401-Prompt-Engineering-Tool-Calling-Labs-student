@@ -4,6 +4,10 @@
 > - **PHẦN A — Giới thiệu agent**: ngắn gọn 1 trang để team khác hiểu nhanh agent có tool gì, làm được gì, thử bằng câu hỏi nào. **Xong trước 16:30** để làm tài liệu phụ trợ khi demo. Có thể làm thành poster HTML/SVG (`artifacts/poster.html` / `poster.svg`) để show cho team cùng zone.
 > - **PHẦN B — Chi tiết / Bằng chứng**: bảng đầy đủ (v0–v3, failure, eval, chat) dựa trên log thật. **Có thể hoàn thiện sau buổi debate để nộp bài.**
 
+> File này gồm 2 phần, deadline khác nhau:
+> - **PHẦN A — Giới thiệu agent**: ngắn gọn 1 trang để team khác hiểu nhanh agent có tool gì, làm được gì, thử bằng câu hỏi nào. **Xong trước 16:30** để làm tài liệu phụ trợ khi demo. Có thể làm thành poster HTML/SVG (`artifacts/poster.html` / `poster.svg`) để show cho team cùng zone.
+> - **PHẦN B — Chi tiết / Bằng chứng**: bảng đầy đủ (v0–v3, failure, eval, chat) dựa trên log thật. **Có thể hoàn thiện sau buổi debate để nộp bài.**
+
 ## Team
 
 - Team:2
@@ -72,6 +76,7 @@ Fill from `artifacts/version_log.csv` and `runs/*.json`.
 | v6 | system_prompt.md | Bắt buộc clarify+send cùng lúc | 0.80 | 1.0 (base), 0.90 (group) | runs/v6_B_base_openrouter_20260602T154645493453.json |
 
 ## B2. Failure Analysis
+## B2. Failure Analysis
 
 Use actual failures from `results[*].result.failures`.
 
@@ -104,6 +109,7 @@ List the 10 cases added to `data/eval_group.json` (5 single turn + 5 multi turn)
 | G10_multiturn_parallel_then_format | Tìm web+tweet → format bullets | lookup + social_search + format(bullets) | PASS |
 
 ## B4. Live Chat Evidence
+## B4. Live Chat Evidence
 
 Use `transcripts/*.transcript.json`.
 
@@ -118,6 +124,7 @@ Use `transcripts/*.transcript.json`.
 | 1 | "Tweet mới nhất của Sam Altman?" | timeline(screenname=sama) | v6 | Trả về tweet |
 
 ## B5. Bonus Evidence
+## B5. Bonus Evidence
 
 Only fill if your team did bonus.
 
@@ -127,6 +134,7 @@ Only fill if your team did bonus.
 | arXiv/company policy | (tools sẵn có) | papers + paper_text + policy hoạt động | Rate limit 3s cho arXiv |
 | UI (Streamlit) | app.py | Chat interface + tool expanders + transcript logging | Chạy localhost:8501, cần --server.fileWatcherType none |
 
+## B6. Reflection
 ## B6. Reflection
 
 - **Which fixes belonged in `system_prompt.md`?** Routing rules (tool nào cho câu nào), name→handle mapping, send 3-step flow, out-of-scope detection, parallel tool calls, format sau search, "never fabricate results".
