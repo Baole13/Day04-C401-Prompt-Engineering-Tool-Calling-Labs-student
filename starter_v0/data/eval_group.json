@@ -1,0 +1,267 @@
+{
+  "dataset_id": "day04_v2_research_group",
+  "dataset_role": "group",
+  "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
+  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
+  "cases": [
+    {
+      "id": "G01_weather_routing_basic",
+      "phase": "B",
+      "suite": "group",
+      "query": "Thời tiết ở Hà Nội hôm nay thế nào?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "city": "Hà Nội"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "routing_custom_tool",
+        "difficulty": "easy",
+        "what_it_tests": "Kiểm tra Agent định tuyến chính xác yêu cầu thời tiết sang công cụ weather tự dựng thay vì lookup web thông thường."
+      }
+    },
+    {
+      "id": "G02_weather_missing_city",
+      "phase": "B",
+      "suite": "group",
+      "query": "Nhiệt độ hiện tại ở đây là bao nhiêu độ?",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "clarify_missing_param",
+        "difficulty": "medium",
+        "what_it_tests": "Người dùng hỏi thời tiết nhưng không đưa tên thành phố cụ thể ('ở đây'). Agent phải gọi clarify yêu cầu cung cấp thông tin, cấm tự đoán bừa."
+      }
+    },
+    {
+      "id": "G03_weather_multiturn_carryover",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Kiểm tra thời tiết ở Đà Nẵng giúp mình."
+        },
+        {
+          "role": "user",
+          "content": "Còn ở Sài Gòn thì sao?"
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "city": "Sài Gòn"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_arg_switch",
+        "difficulty": "hard",
+        "what_it_tests": "Hội thoại nhiều lượt (Multiturn). Lượt sau người dùng đổi địa điểm sang Sài Gòn nhưng vẫn giữ nguyên ý định hỏi thời tiết. Agent phải cập nhật chính xác tham số city thành Sài Gòn."
+      }
+    }
+    ,
+    {
+      "id": "G04_out_of_scope_math",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tính giúp mình tích phân của 2x bằng bao nhiêu?",
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "metadata": {
+        "skill": "out_of_scope_math",
+        "difficulty": "easy",
+        "what_it_tests": "Câu hỏi toán học ngoài phạm vi -> KHÔNG gọi tool, từ chối."
+      }
+    },
+    {
+      "id": "G05_unnecessary_tool_greeting",
+      "phase": "B",
+      "suite": "group",
+      "query": "Chào buổi sáng, bạn có thể làm được những việc gì?",
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "metadata": {
+        "skill": "no_tool_greeting",
+        "difficulty": "easy",
+        "what_it_tests": "Câu hỏi chào hỏi/giới thiệu -> Trả lời chay, không gọi tool."
+      }
+    },
+    {
+      "id": "G06_social_search_top",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm kiếm các bài đăng phổ biến (Top) nhất về VinAI trên mạng xã hội",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "VinAI",
+              "search_type": "Top"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "arg_search_type",
+        "difficulty": "medium",
+        "what_it_tests": "Trích xuất đúng từ khóa và search_type='Top'."
+      }
+    },
+    {
+      "id": "G07_multiturn_weather_to_news",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Thời tiết ở Hà Nội hôm nay thế nào?"
+        },
+        {
+          "role": "user",
+          "content": "Thôi bỏ qua thời tiết đi, tìm tin tức AI hôm nay cho mình."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_switch_topic",
+        "difficulty": "hard",
+        "what_it_tests": "Đổi ngữ cảnh hoàn toàn từ thời tiết sang tin tức -> Chuyển từ tool weather sang tool lookup."
+      }
+    },
+    {
+      "id": "G08_multiturn_clarify_then_send",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Đăng nội dung 'Test' lên Telegram giúp mình."
+        },
+        {
+          "role": "user",
+          "content": "Ừ, mình đồng ý, đăng đi."
+        }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "text": "Test",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_confirm_send",
+        "difficulty": "hard",
+        "what_it_tests": "Lượt 1 yêu cầu gửi -> Lượt 2 user xác nhận 'đồng ý' -> Lệnh send được gọi với confirmed=true."
+      }
+    },
+    {
+      "id": "G09_multiturn_carryover_social",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Mọi người nói gì về xe điện trên mạng xã hội?"
+        },
+        {
+          "role": "user",
+          "content": "Lọc lấy các bài phổ biến nhất (Top) nhé."
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "xe điện",
+              "search_type": "Top"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_social_carryover",
+        "difficulty": "hard",
+        "what_it_tests": "Ghi nhớ query 'xe điện' từ lượt 1, cập nhật thêm search_type='Top' ở lượt 2."
+      }
+    },
+    {
+      "id": "G10_multiturn_missing_url",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tóm tắt giúp mình bài viết này."
+        },
+        {
+          "role": "user",
+          "content": "https://vnexpress.net"
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://vnexpress.net"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_fill_url",
+        "difficulty": "medium",
+        "what_it_tests": "Lượt 1 thiếu URL -> Lượt 2 cung cấp URL -> Gọi hàm fetch chính xác."
+      }
+    }
+  ]
+}
