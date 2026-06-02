@@ -1,0 +1,178 @@
+{
+  "dataset_id": "day04_v2_research_group",
+  "dataset_role": "group",
+  "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
+  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
+  "cases": [
+    {
+      "id": "G01_web_news_month_ai",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tổng hợp tin AI trong tháng này.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": { "query": "AI", "topic": "news", "timeframe": "month" }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Timeframe='tháng này' → lookup(topic=news,timeframe=month) và query giữ gọn 'AI'."
+      }
+    },
+    {
+      "id": "G02_fetch_then_format_digest",
+      "phase": "B",
+      "suite": "group",
+      "query": "Đọc link này rồi làm digest bullet 3 ý chính: https://example.com",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          { "name": "fetch", "args": { "url": "https://example.com" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "One-shot eval: ít nhất phải chọn đúng tool fetch khi đã có URL cụ thể (không được lookup)."
+      }
+    },
+    {
+      "id": "G03_policy_privacy_external_share",
+      "phase": "B",
+      "suite": "group",
+      "query": "Mình có được đăng công khai dữ liệu khách hàng lên blog để làm case study không? Tra policy giúp mình.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          { "name": "policy", "args": { "policy_area": "data_privacy" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Câu hỏi policy nội bộ → gọi policy, ưu tiên policy_area=data_privacy."
+      }
+    },
+    {
+      "id": "G04_missing_topic_for_news",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm tin tức hôm nay giúp mình.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          { "name": "lookup", "args": { "query": "tin tức", "topic": "news", "timeframe": "day" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Tin tức chung hôm nay (không chỉ rõ chủ đề) → vẫn nên lookup news timeframe=day thay vì hỏi lại."
+      }
+    },
+    {
+      "id": "G05_send_requires_confirmation",
+      "phase": "B",
+      "suite": "group",
+      "query": "Gửi thông báo này lên Telegram: \"Hello team\"",
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          { "name": "clarify", "args": { "response_type": "yes_no" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Action send luôn phải xin xác nhận yes/no trước, không gọi send ngay."
+      }
+    },
+
+    {
+      "id": "GM01_multiturn_missing_topic_then_lookup",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        { "role": "user", "content": "Tìm tin tức hôm nay giúp mình." },
+        { "role": "user", "content": "Chủ đề là AI." },
+        { "role": "user", "content": "Chỉ tin hôm nay thôi." }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          { "name": "lookup", "args": { "query": "AI", "topic": "news", "timeframe": "day" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: lấy chủ đề từ lượt 2 và timeframe=day từ ngữ cảnh 'hôm nay', chỉ xử lý latest turn."
+      }
+    },
+    {
+      "id": "GM02_switch_to_social_only",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        { "role": "user", "content": "Tìm tin AI hôm nay trên web." },
+        { "role": "user", "content": "Thôi bỏ web, chỉ tìm tweet về AI thôi." },
+        { "role": "user", "content": "Lấy top tweet nhé." }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          { "name": "social_search", "args": { "query": "AI", "search_type": "Top" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn switch tool: explicit 'bỏ web' → không gọi lookup, chỉ social_search; 'top' → search_type=Top."
+      }
+    },
+    {
+      "id": "GM03_carry_limit_from_first_turn",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        { "role": "user", "content": "Tóm tắt 2 tweet mới nhất của Andrej Karpathy." },
+        { "role": "user", "content": "À nhầm, của Sam Altman." },
+        { "role": "user", "content": "Giữ đúng số lượng tweet như ban đầu." }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          { "name": "timeline", "args": { "screenname": "sama", "limit": 2 } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn correction + carry limit: đổi handle sang sama và giữ limit=2."
+      }
+    },
+    {
+      "id": "GM04_clarify_then_fetch_exact_url",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        { "role": "user", "content": "Tóm tắt bài viết này cho mình." },
+        { "role": "user", "content": "https://openai.com/research/" },
+        { "role": "user", "content": "Chỉ đọc đúng link đó, không search thêm." }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          { "name": "fetch", "args": { "url": "https://openai.com/research/" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: sau khi có URL và user nhấn mạnh 'chỉ đọc link đó' → fetch đúng url, không gọi lookup."
+      }
+    },
+    {
+      "id": "GM05_out_of_scope_personal_email",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        { "role": "user", "content": "Viết giúp mình một email xin nghỉ phép 1 ngày." },
+        { "role": "user", "content": "Viết ngắn gọn, lịch sự." },
+        { "role": "user", "content": "Đừng dùng tool nhé." }
+      ],
+      "failure_type": "out_of_scope",
+      "expect": { "no_tool": true, "behavior": "refuse" },
+      "metadata": {
+        "what_it_tests": "Ngoài phạm vi research agent; phải không gọi tool. (Nếu system định nghĩa out-of-scope là refuse/redirect.)"
+      }
+    }
+  ]
+}

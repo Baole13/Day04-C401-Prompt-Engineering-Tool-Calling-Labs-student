@@ -1,0 +1,269 @@
+{
+  "transcript_id": "v0_openrouter_20260602T151753601434",
+  "version": "v0",
+  "artifact_version": "v0+p84c656a46826+t49a9f6e80b6a",
+  "prompt_hash": "84c656a4682663c83707302f0e6c0457b578a2c491b80df0b2e6d8d80cc90a5c",
+  "tools_hash": "49a9f6e80b6a7226c826cc8b8a485bf39e7f2857d664b11eea07b6f81a8424e4",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "starter_v0\\artifacts\\system_prompt.md",
+  "tools": "starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-06-02T15:17:53",
+  "updated_at": "2026-06-02T15:23:05",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-06-02T15:18:36",
+      "user": "Tweet mới nhất của Sam Altman là gì?",
+      "status": "answered",
+      "assistant_text": "Tweet mới nhất của Sam Altman là:\n\n\"The OpenAI Foundation is doing a lot of wonderful things. Helping society become resilient to AI is going to be incredibly important. Much more to come here!\" \n\nBạn có thể xem tweet tại đây: [Link đến tweet](https://x.com/sama/status/2061562575322492937). \n\nTweet này đã nhận được 1684 lượt thích và 133 lượt retweet.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "timeline",
+              "args": {
+                "screenname": "sama",
+                "limit": 1
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "timeline",
+              "args": {
+                "screenname": "sama",
+                "limit": 1
+              },
+              "result": {
+                "tool": "get_user_tweets",
+                "screenname": "sama",
+                "items": [
+                  {
+                    "title": "The OpenAI Foundation is doing a lot of wonderful things.",
+                    "summary": "The OpenAI Foundation is doing a lot of wonderful things.\n\nHelping society become resilient to AI is going to be incredibly important. Much more to come here!",
+                    "url": "https://x.com/sama/status/2061562575322492937",
+                    "source": "@sama",
+                    "date": "Mon Jun 01 21:36:34 +0000 2026",
+                    "metrics": {
+                      "favorites": 1684,
+                      "retweets": 133,
+                      "views": "242026"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Tweet mới nhất của Sam Altman là:\n\n\"The OpenAI Foundation is doing a lot of wonderful things. Helping society become resilient to AI is going to be incredibly important. Much more to come here!\" \n\nBạn có thể xem tweet tại đây: [Link đến tweet](https://x.com/sama/status/2061562575322492937). \n\nTweet này đã nhận được 1684 lượt thích và 133 lượt retweet.",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "timeline",
+          "args": {
+            "screenname": "sama",
+            "limit": 1
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "sama",
+            "items": [
+              {
+                "title": "The OpenAI Foundation is doing a lot of wonderful things.",
+                "summary": "The OpenAI Foundation is doing a lot of wonderful things.\n\nHelping society become resilient to AI is going to be incredibly important. Much more to come here!",
+                "url": "https://x.com/sama/status/2061562575322492937",
+                "source": "@sama",
+                "date": "Mon Jun 01 21:36:34 +0000 2026",
+                "metrics": {
+                  "favorites": 1684,
+                  "retweets": 133,
+                  "views": "242026"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "ended_at": "2026-06-02T15:18:50"
+    },
+    {
+      "turn_index": 2,
+      "started_at": "2026-06-02T15:19:52",
+      "user": "gửi vào telegram được không",
+      "status": "waiting_for_user",
+      "assistant_text": "Bạn có muốn gửi tweet này vào Telegram không?",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "clarify",
+              "args": {
+                "question": "Bạn có muốn gửi tweet này vào Telegram không?",
+                "response_type": "yes_no"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "clarify",
+              "args": {
+                "question": "Bạn có muốn gửi tweet này vào Telegram không?",
+                "response_type": "yes_no"
+              },
+              "result": {
+                "tool": "ask_user",
+                "question": "Bạn có muốn gửi tweet này vào Telegram không?",
+                "response_type": "yes_no",
+                "options": [],
+                "awaiting_user": true
+              }
+            }
+          ]
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn có muốn gửi tweet này vào Telegram không?",
+            "response_type": "yes_no"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn có muốn gửi tweet này vào Telegram không?",
+            "response_type": "yes_no",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ],
+      "ended_at": "2026-06-02T15:19:55"
+    },
+    {
+      "turn_index": 3,
+      "started_at": "2026-06-02T15:19:59",
+      "user": "có",
+      "status": "answered",
+      "assistant_text": "Có vẻ như đã xảy ra lỗi khi cố gắng gửi tweet vào Telegram. Tôi không thể gửi tin nhắn do một lỗi từ máy chủ. Bạn có muốn thử lại hoặc có yêu cầu khác không?",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "send",
+              "args": {
+                "text": "Tweet mới nhất của Sam Altman: \"The OpenAI Foundation is doing a lot of wonderful things. Helping society become resilient to AI is going to be incredibly important. Much more to come here!\" [Link đến tweet](https://x.com/sama/status/2061562575322492937)",
+                "confirmed": true
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "send",
+              "args": {
+                "text": "Tweet mới nhất của Sam Altman: \"The OpenAI Foundation is doing a lot of wonderful things. Helping society become resilient to AI is going to be incredibly important. Much more to come here!\" [Link đến tweet](https://x.com/sama/status/2061562575322492937)",
+                "confirmed": true
+              },
+              "result": {
+                "tool": "send_telegram",
+                "error": "HTTPError",
+                "message": "400 Client Error: Bad Request for url: https://api.telegram.org/bot8129773249:AAFLJs5Uwd24uNLRTRNALbvlnqozx8Gd5yQ/sendMessage"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Có vẻ như đã xảy ra lỗi khi cố gắng gửi tweet vào Telegram. Tôi không thể gửi tin nhắn do một lỗi từ máy chủ. Bạn có muốn thử lại hoặc có yêu cầu khác không?",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "send",
+          "args": {
+            "text": "Tweet mới nhất của Sam Altman: \"The OpenAI Foundation is doing a lot of wonderful things. Helping society become resilient to AI is going to be incredibly important. Much more to come here!\" [Link đến tweet](https://x.com/sama/status/2061562575322492937)",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "send_telegram",
+            "error": "HTTPError",
+            "message": "400 Client Error: Bad Request for url: https://api.telegram.org/bot8129773249:AAFLJs5Uwd24uNLRTRNALbvlnqozx8Gd5yQ/sendMessage"
+          }
+        }
+      ],
+      "ended_at": "2026-06-02T15:20:14"
+    },
+    {
+      "turn_index": 4,
+      "started_at": "2026-06-02T15:22:56",
+      "user": "hãy gửi lại",
+      "status": "answered",
+      "assistant_text": "Rất tiếc, nhưng tôi không thể gửi tweet vào Telegram do một lỗi từ máy chủ. Bạn có muốn thử lại sau hoặc có yêu cầu khác không?",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "send",
+              "args": {
+                "text": "Tweet mới nhất của Sam Altman: \"The OpenAI Foundation is doing a lot of wonderful things. Helping society become resilient to AI is going to be incredibly important. Much more to come here!\" \n\nXem tweet tại đây: https://x.com/sama/status/2061562575322492937",
+                "confirmed": true
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "send",
+              "args": {
+                "text": "Tweet mới nhất của Sam Altman: \"The OpenAI Foundation is doing a lot of wonderful things. Helping society become resilient to AI is going to be incredibly important. Much more to come here!\" \n\nXem tweet tại đây: https://x.com/sama/status/2061562575322492937",
+                "confirmed": true
+              },
+              "result": {
+                "tool": "send_telegram",
+                "error": "HTTPError",
+                "message": "400 Client Error: Bad Request for url: https://api.telegram.org/bot8129773249:AAFLJs5Uwd24uNLRTRNALbvlnqozx8Gd5yQ/sendMessage"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Rất tiếc, nhưng tôi không thể gửi tweet vào Telegram do một lỗi từ máy chủ. Bạn có muốn thử lại sau hoặc có yêu cầu khác không?",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "send",
+          "args": {
+            "text": "Tweet mới nhất của Sam Altman: \"The OpenAI Foundation is doing a lot of wonderful things. Helping society become resilient to AI is going to be incredibly important. Much more to come here!\" \n\nXem tweet tại đây: https://x.com/sama/status/2061562575322492937",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "send_telegram",
+            "error": "HTTPError",
+            "message": "400 Client Error: Bad Request for url: https://api.telegram.org/bot8129773249:AAFLJs5Uwd24uNLRTRNALbvlnqozx8Gd5yQ/sendMessage"
+          }
+        }
+      ],
+      "ended_at": "2026-06-02T15:23:05"
+    }
+  ]
+}
